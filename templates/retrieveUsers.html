@@ -1,0 +1,189 @@
+{% extends "admin.html" %}
+{% block title %}Prime Supermarket - Retrieve Users{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Retrieve Users</h1>
+<!--<div>-->
+<!--    {% if count == 0 %}-->
+<!--    <p>There are no users.</p>-->
+<!--    {% elif count == 1 %}-->
+<!--    <p>There is 1 user.</p>-->
+<!--    {% else %}-->
+<!--    <p>There are {{ count }} users.</p>-->
+<!--    {% endif %}-->
+<!--</div>-->
+<div>
+    <form method="POST">
+        <input type="submit" value="Retrieve Customer" class="btn btn-primary" name="submit"/>
+        <input type="submit" value="Retrieve Admin" class="btn btn-primary" name="submit"/>
+    </form>
+
+    {% if select == "customer" %}
+    <h2>Customer Database</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Membership</th>
+            <th>Date Joined</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for customer in cust_list %}
+        <tr>
+            <td>{{ customer.get_customer_id() }}</td>
+            <td>{{ customer.get_first_name() }}</td>
+            <td>{{ customer.get_last_name() }}</td>
+            <td>{{ customer.get_gender() }}</td>
+            <td>{{ customer.get_email() }}</td>
+            <td>{{ customer.get_membership() }}</td>
+            <td>{{ customer.get_joined_date() }}</td>
+            <td style="min-width:170px;"><a href="/updateUser/{{customer.get_customer_id()}}/customer" class="btn btn-warning">Update</a>
+                <input type="button" value="Delete" class="btn btn-danger" id="{{customer.get_customer_id()}}">
+            </td>
+        </tr>
+
+                <!-- The Modal -->
+        <div id="myModal{{customer.get_customer_id()}}" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="{{ url_for('static', filename='redExclaim.png')}}" class="icon">
+                    <h2>Are you sure you want to delete {{ customer.get_first_name() }} {{ customer.get_last_name() }}?</h2>
+                    <span>{{ customer.get_first_name() }} {{ customer.get_last_name() }} will not be able to be retrieved again</span>
+                </div>
+
+                <form action="{{url_for('delete_products', id=customer.get_customer_id(), select='customer') }}" method="POST">
+                    <input type="submit" value="Delete" class="btn btn-danger select-btn"
+                           style="background-color: red;color: white;font-weight: bold;">
+                    <input type="button" class="close select-btn" value="Cancel" style="margin-top: 15px;" id="close{{customer.get_customer_id()}}">
+                </form>
+            </div>
+
+        </div>
+
+<script>
+    // Get the modal
+
+    var modal{{customer.get_customer_id()}} = document.getElementById("myModal{{customer.get_customer_id()}}");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("{{ customer.get_customer_id() }}");
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+      modal{{ customer.get_customer_id() }}.style.display = "block";
+    }
+
+    close = document.getElementById("close{{ customer.get_customer_id() }}")
+
+    // When the user clicks on <span> (x), close the modal
+    close.onclick = function() {
+      modal{{ customer.get_customer_id() }}.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal{{ customer.get_customer_id()}}) {
+        modal{{ customer.get_customer_id() }}.style.display = "none";
+      }
+    }
+
+</script>
+
+    {% endfor %}
+    </tbody>
+</table>
+    {% endif %}
+
+    {% if select == "admin" %}
+    <h2>Admin Database</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Admin ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for admin in admin_list %}
+        <tr>
+            <td>{{ admin.get_user_id() }}</td>
+            <td>{{ admin.get_first_name() }}</td>
+            <td>{{ admin.get_last_name() }}</td>
+            <td>{{ admin.get_email() }}</td>
+            <td>{{ admin.get_role() }}</td>
+            <td style="min-width:170px;"><a href="/updateUser/{{admin.get_user_id()}}/admin" class="btn btn-warning">Update</a>
+                <input type="button" value="Delete" class="btn btn-danger" id="{{ admin.get_user_id() }}">
+            </td>
+        </tr>
+
+        <!-- The Modal -->
+        <div id="myModal{{ admin.get_user_id() }}" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="{{ url_for('static', filename='redExclaim.png')}}" class="icon">
+                    <h2>Are you sure you want to delete {{ admin.get_first_name() }} {{ admin.get_last_name() }}?</h2>
+                    <span>{{ admin.get_first_name() }} {{ admin.get_last_name() }} will not be able to be retrieved again</span>
+                </div>
+
+                <form action="{{url_for('delete_products', id=admin.get_user_id()) }}" method="POST">
+                    <input type="submit" value="Delete" class="btn btn-danger select-btn"
+                           style="background-color: red;color: white;font-weight: bold;">
+                    <input type="button" class="close select-btn" value="Cancel" style="margin-top: 15px;" id="close{{ admin.get_user_id() }}">
+                </form>
+            </div>
+
+        </div>
+
+<script>
+    // Get the modal
+
+    var modal{{ admin.get_user_id() }} = document.getElementById("myModal{{ admin.get_user_id() }}");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("{{ admin.get_user_id() }}");
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+      modal{{ admin.get_user_id() }}.style.display = "block";
+    }
+
+    close = document.getElementById("close{{ admin.get_user_id() }}")
+
+    // When the user clicks on <span> (x), close the modal
+    close.onclick = function() {
+      modal{{ admin.get_user_id() }}.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal{{ admin.get_user_id() }}) {
+        modal{{ admin.get_user_id() }}.style.display = "none";
+      }
+    }
+
+</script>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+</div>
+{% endblock %}

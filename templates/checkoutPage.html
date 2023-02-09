@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - Create Delivery{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+<html>
+<style>
+   .submit-btn {
+        color: white;
+        width: 100%;
+        background-color:green;
+        font-weight:bold ;
+        border-radius: 5px;
+        border:1px solid grey;
+        margin-top:20px;
+        padding:8px;
+   }
+   .submit-btn:hover {
+        opacity:0.6;
+   }
+   .span { padding: 50px;
+   }
+   /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+</style>
+<body>
+
+<div style="width: 90%; margin:auto;margin-top:20px;">
+    <a href=""><img style="max-width: 5%"src="{{ url_for('static', filename='cart.png')}}"> <span style="color: black">Back to Cart</span></a>
+    <div style="border:1px solid grey; border-radius: 10px; padding: 20px;margin-top: 0px;">
+        <div class="row">
+            <div class="col-md-6" style="padding-right:50px">
+                <h5 class="display-5">Shipping Destination</h5>
+                <form method="POST" action="" novalidate>
+                    <div class="form-group">
+                    {{ render_field(form.address, class="form-control") }}
+                  </div>
+                  <div class="form-group" style="max-width: 40%">
+                    {{ render_field(form.postal, class="form-control", pattern="\d*", maxlength="6") }}
+                  </div>
+
+                    <h2 class="display-5" style="margin-top: 60px;">Payment</h2>
+
+                    <div class="row g-2">
+                        <div class="col-md-6"  >
+                            <img style="width: 60%;max-height:100px; border: 1px solid grey; " src="{{ url_for('static', filename='visa.jpg')}}">
+                        </div>
+                        <div class="col-md-6" >
+                            <img style="width: 50%;max-height:100px; border: 1px solid grey; " src="{{ url_for('static', filename='mastercard.jpg')}}">
+                        </div>
+                    </div>
+
+                   <div class="form-group">
+                    {{ render_field(form.card_number, class="form-control", pattern="\d*", maxlength="16") }}
+                  </div>
+                  <div class="form-group">
+                    {{ render_field(form.name_on_card, class="form-control") }}
+                  </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            {{ render_field(form.expiry_date, class="form-control") }}
+                          </div>
+                          <div class="form-group col-md-6">
+                               {{ render_field(form.cvv, class="form-control", pattern="\d*", maxlength="3") }}
+                          </div>
+                    </div>
+
+
+
+            </div>
+
+            <div class="col-md-6" >
+                <div style="background-color:#D0D0D0;border-radius: 10px; padding: 20px; min-height: 200px;">
+                    <h2>Order Overview</h2>
+                    <div style="padding-bottom:15px">
+                        <span>Items:</span>
+                        <span style="float: right;">x3</span>
+                    </div>
+
+
+                    </div>
+
+                    <div style="padding-bottom:15px">
+                        <span>Delivery Fee:</span>
+                        <span style="float: right;">$10.00</span>
+                    </div>
+
+                    <div id="discount">
+                        <div style="padding-bottom:15px">
+                        <span>Discount:</span>
+                        <span style="float: right;">$0.00</span>
+                    </div>
+
+                    <hr>
+
+                    <div>
+                        <span>Subtotal:</span>
+                        <span style="float: right;">$20.00</span>
+                    </div>
+
+                    <input type="submit" value="Make Payment" class="submit-btn">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
+{% endblock %}

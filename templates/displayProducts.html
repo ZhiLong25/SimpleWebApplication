@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Prime Supermarket - Retrieve Products{% endblock %}
+{% block content %}
+
+
+<div class="wrap">
+    <h2 style="padding-bottom: 10px;">Our Products</h2>
+    <div class="row g-5">
+
+        {% for product in prod_list %}
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <a href="/individualProducts/{{ product.get_product_id()}}">
+                <div class="product-div">
+                    <div class="image-wrap">
+                        <img src="/uploads/{{ product.get_image()}}">
+                    </div>
+                    <div class="product-inf">
+                        <h4>{{ product.get_name() }}</h4>
+                        <span>$ {{ product.get_price() }}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+
+<script>
+
+</script>
+
+{% endblock %}

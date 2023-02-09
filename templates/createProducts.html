@@ -1,0 +1,134 @@
+{% extends "admin.html" %}
+{% block title %}Prime Supermarket - Create Products{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+<style>
+    .col-md-4, .col-md-12 {
+        padding-top: 15px;
+    }
+
+    /* The Modal (background) */
+.modal {
+    display: block;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  float: right;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal {
+    display:block;
+}
+</style>
+
+{% for message in get_flashed_messages() %}
+        <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{{ url_for('static', filename='redExclaim.png')}}" class="icon">
+                <h2>Error!</h2>
+                <span>{{ message}}</span>
+            </div>
+
+            <form action="" method="POST">
+<!--                <input type="submit" value="Add" class="btn btn-primary"-->
+<!--                       style="background-color: red;color: white;font-weight: bold; width:100%;">-->
+                <input type="button" class="close select-btn" value="Close" style="margin-top: 15px;" id="close">
+            </form>
+        </div>
+
+    </div>
+
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+var close = document.getElementsByClassName("close")[0]
+// When the user clicks on <span> (x), close the modal
+close.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+
+{% endfor %}
+
+
+<form method="post" enctype="multipart/form-data" novalidate>
+            <h2 style="margin-top:60px ;">Create Product</h2>
+
+            <div>
+                {{ form.hidden_tag() }}
+                <img src="{{ url_for('static', filename='Placeholder.jpg')}}" style="max-height:350px;">
+            </div>
+            {{ form.csrf_token }}
+            {{ render_field(form.photo, class="form-control") }}
+
+            <div class="row">
+                <div class="col-md-4">
+                    {{ render_field(form.prod_name, class="form-control") }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    {{ render_field(form.description, class="form-control") }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                  {{ render_field(form.price, class="form-control") }}
+                </div>
+                <div class="col-md-4">
+                    {{ render_field(form.stock, class="form-control") }}
+                </div>
+                <div class="col-md-4">
+                    {{ render_field(form.ref_no, class="form-control") }}
+                </div>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <input type="submit" value="Create Product" style="float:right">
+            </div>
+</form>
+{% endblock %}

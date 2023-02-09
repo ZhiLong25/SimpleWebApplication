@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Prime Supermarket - Individual Products{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+
+<body>
+
+<div style="width:90%;margin:auto;margin-top:60px;">
+    <h1>Your search Results</h1>
+    <div class="row g-5">
+
+        {% for product in prod_list %}
+
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <a href="/individualProducts/{{ product.get_product_id()}}">
+                <div class="product-div">
+                    <div class="image-wrap">
+                        <img src="/uploads/{{ product.get_image()}}">
+                    </div>
+                    <div class="product-inf">
+                        <h4>{{ product.get_name() }}</h4>
+                        <span>$ {{ product.get_price() }}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+            {% endfor %}
+</div>
+
+</body>
+
+{% endblock %}

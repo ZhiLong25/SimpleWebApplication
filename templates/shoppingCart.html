@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block title %}Prime Supermarket - Individual Products{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+
+<style>
+    img {
+        max-width:200px;
+        border-radius:5px;
+    }
+
+    input[type=button] {
+        width:80px;
+    }
+
+
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    /* The Close Button */
+
+    .select-btn {
+        width: 100%;
+        cursor: pointer;
+        padding:7px;
+        border-radius: 5px;
+        border: 1px solid grey;
+    }
+
+    .icon  {
+        height: 40px;
+    }
+
+
+</style>
+<div style="width: 90%; margin:auto;">
+    <div style="margin-top:60px;background-color: #c2c5cc; border-radius: 15px; padding: 20px;">
+    <h2>In your Cart</h2>
+
+    {% for item in prod_list %}
+    <div style="display: flex; justify-content: space-between;margin-top:20px;" class="row">
+        <div style="display: flex; gap: 25px; min-height: 200px;">
+            <img src="/uploads/{{ item.get_image() }}">
+            <div style="width:100%">
+                <div style="float:right">
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-secondary" id="edit{{ item.get_product_id() }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                                    <path fill-rule="evenodd"
+                                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                                </svg>
+                            </button>
+
+                        </div>
+                        <div class="col">
+                            <button id="{{ item.get_product_id() }}" type="button" class="btn btn-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"></path>
+                                </svg>
+                            </button>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <h2>{{ item.get_prodname() }}</h2>
+                <span>${{ item.get_prodprice() }}</span>
+                <br>
+                <span id="quan{{ item.get_product_id() }}">x {{ item.get_prodquan() }}</span>
+
+                <div id="fields{{ item.get_product_id() }}" style="display:none;">
+                    <form action="{{ url_for('updatecart', id=item.get_product_id() ) }}" method="post">
+                        <div>
+                            {{ render_field(form.quantity, style="width:80px;", class="form-control",
+                            value=item.get_prodquan(), id="quantity{{ item.get_product_id() }}") }}
+                            <input type="submit" value="Enter" id="submit{{ item.get_product_id() }}"
+                                   style="width:80px; margin-top:10px;">
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal{{ item.get_product_id() }}" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{{ url_for('static', filename='redExclaim.png')}}" class="icon">
+                <h2>Are you sure you want to delete {{ item.get_prodname() }}?</h2>
+                <span>{{ item.get_prodname() }} will not be able to be retrieved again</span>
+            </div>
+
+            <form action="{{url_for('cart_delete', id=item.get_product_id()) }}" method="POST">
+                <input type="submit" value="Delete" class="btn btn-danger select-btn"
+                       style="background-color:red; margin-top:10px;">
+                <input type="button" class="close select-btn" value="Cancel" style="margin-top: 15px;width:100%;"
+                       id="close{{ item.get_product_id() }}">
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+        var quan{{ item.get_product_id() }} = document.getElementById("quan{{ item.get_product_id() }}")
+        var btn{{ item.get_product_id() }} = document.getElementById("edit{{ item.get_product_id() }}")
+
+        var edit{{ item.get_product_id() }} = document.getElementById("fields{{ item.get_product_id() }}")
+
+
+        btn{{ item.get_product_id() }}.onclick = function() {
+            edit{{ item.get_product_id() }}.style.display = "block"
+            quan{{ item.get_product_id() }}.style.display = "none"
+        }
+
+        var submit{{ item.get_product_id() }} = document.getElementById("submit{{ item.get_product_id() }}")
+        var quantity{{ item.get_product_id() }} = document.getElementById("")
+        submit{{ item.get_product_id() }}.onclick = function() {
+            if (quantity{{ item.get_product_id() }} < 1) {
+                edit{{ item.get_product_id() }}.style.display = "block"
+            }
+            else {
+                edit{{ item.get_product_id() }}.style.display = "none"
+                quan{{ item.get_product_id() }}.style.display = "block"
+            }
+        }
+
+
+    // Get the modal
+
+    var modal{{ item.get_product_id() }} = document.getElementById("myModal{{ item.get_product_id() }}");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("{{ item.get_product_id() }}");
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+      modal{{ item.get_product_id() }}.style.display = "block";
+    }
+
+    close = document.getElementById("close{{ item.get_product_id() }}")
+
+    // When the user clicks on <span> (x), close the modal
+    close.onclick = function() {
+      modal{{ item.get_product_id() }}.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal{{ item.get_product_id() }}) {
+        modal{{ item.get_product_id() }}.style.display = "none";
+      }
+    }
+
+
+
+    </script>
+
+    {% endfor %}
+
+    <hr>
+    <div style="display: flex;justify-content: space-between;">
+        <span><b>Total amount</b></span><span>$ {{ total }}</span>
+    </div>
+
+</div>
+    <div style="margin-top:20px;">
+        <form method="POST">
+            <input type="submit" name="submit" value="Checkout" style="width:100%;">
+        </form>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,157 @@
+{% extends "admin.html" %}
+{% block title %}Prime Supermarket - Create User{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+<style>
+   .modal {
+    display:block;
+}
+</style>
+
+<h1 class="display-4">Create User</h1>
+
+{% for message in get_flashed_messages() %}
+        <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{{ url_for('static', filename='redExclaim.png')}}" class="icon">
+                <h2>Error!</h2>
+                <span>{{ message }}</span>
+            </div>
+
+            <form action="" method="POST">
+<!--                <input type="submit" value="Add" class="btn btn-primary"-->
+<!--                       style="background-color: red;color: white;font-weight: bold; width:100%;">-->
+                <input type="button" class="close select-btn" value="Close" style="margin-top: 15px;" id="close">
+            </form>
+        </div>
+
+    </div>
+
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+var close = document.getElementsByClassName("close")[0]
+// When the user clicks on <span> (x), close the modal
+close.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+
+{% endfor %}
+<div class="container mt-3">
+
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#home">Customer</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#menu1">Admin</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="home" class="container tab-pane active"><br>
+            <h3>Customer</h3>
+            <form method="POST" action="" novalidate>
+                <div class="row">
+                    <div class="form-group col">
+                        {{ render_field(cust_form.first_name, class="form-control") }}
+                    </div>
+                    <div class="form-group col">
+                        {{ render_field(cust_form.last_name, class="form-control") }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ render_field(cust_form.gender, class="form-control") }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ render_field(cust_form.email, class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(cust_form.username, class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(cust_form.phoneno, class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(cust_form.password, class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(cust_form.c_password, class="form-control") }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ render_field(cust_form.membership, class="form-check", style="list-style-type:none") }}
+                </div>
+
+                <input type="submit" value="Create Customer" class="btn btn-primary" name="submit"/>
+            </form>
+
+
+        </div>
+        <div id="menu1" class="container tab-pane fade"><br>
+            <h3>Admin</h3>
+            <form method="POST" action="" novalidate>
+                <div class="row">
+                    <div class="form-group col">
+                        {{ render_field(admin_form.first_name, class="form-control") }}
+                    </div>
+                    <div class="form-group col">
+                        {{ render_field(admin_form.last_name, class="form-control") }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ render_field(admin_form.gender, class="form-control") }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ render_field(admin_form.email, class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(admin_form.username, class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(admin_form.phoneno, class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(admin_form.password, class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(admin_form.c_password, class="form-control") }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ render_field(admin_form.role, class="form-control") }}
+                </div>
+                <input type="submit" value="Create Admin" class="btn btn-primary" name="submit"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

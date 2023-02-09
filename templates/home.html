@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - Home{% endblock %}
+{% from "includes/_formHelper.html" import render_field %}
+
+{% block content %}
+<style>
+    .page-footer {
+        background-color: 048243;
+    }
+    .main-body {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 60px;
+        margin-bottom: 100px;
+    }
+    .main-img {
+        background-color: lightgrey;
+        width: 90%;
+        height: 400px;
+        border-radius: 1%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px;
+    }
+    .carousel {
+        display: flex;
+        justify-content: space-between;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 100px;
+    }
+    .product-carousel {
+        background-color: lightgrey;
+        width: 300px;
+        height: 300px;
+        border-radius: 10%;
+    }
+    .showcase {
+        display: flex;
+        justify-content: space-between;
+    }
+    .product-showcase {
+        background-color: lightgrey;
+        width: 600px;
+        height: 600px;
+        border-radius: 10px;
+        border:none;
+        padding:8px;
+    }
+    .more-button {
+        background-color: #50D611;
+        color: white;
+        border-radius: 5px;
+        border: none;
+        padding: 8px;
+    }
+
+</style>
+
+
+
+<body>
+<div style="width:90%; margin:auto; margin-top:40px;" class="row">
+    <form method="POST">
+        <div class="col-md-10">
+            {{ render_field(form.product, class="form-control") }}
+        </div>
+        <div class="col-md-2">
+            <input type="submit" value="Search" name="submit">
+        </div>
+
+    </form>
+{% for product in prod_list %}
+
+        <div class="col-md-3">
+            <a href="/individualProducts/{{ product.get_product_id()}}">
+                <div class="product-div">
+                    <img src="/uploads/{{ product.get_image()}}" height="300px" width="300px">
+                    <div class="product-inf">
+                        <h4>{{ product.get_name() }}</h4>
+                        <span>$ {{ product.get_price() }}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+{% endfor %}
+</div>
+
+<div class="main-img"></div>
+<div class="main-body">
+    <h1>Our Services</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+    <p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
+    <p>exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<div style="width:90%; margin:auto;">
+    <h2>Our Products</h2>
+    <div class="carousel">
+    <div class="product-carousel"></div>
+    <div class="product-carousel"></div>
+    <div class="product-carousel"></div>
+    <div class="product-carousel"></div>
+</div>
+</div>
+<div class="showcase" style="width:90%; margin:auto;">
+    <div class="product-showcase" style="margin-right:40px;"></div>
+    <div>
+        <h1>Promotions</h1>
+        <br>
+        <p>Lorem ipsum dolor sit amet, consectetur</p>
+        <p>adipiscing elit, sed do eiusmod tempor incididunt </p>
+        <p>ut labore et dolore magna aliqua. Ut enim ad  </p>
+        <p>minim veniam, quis nostrud exercitation ullamco </p>
+        <p>laboris nisi ut aliquip ex ea commodo consequat. </p>
+        <br>
+        <button class="more-button" type="button">Learn More</button>
+    </div>
+</div>
+<br>
+<!--<button type="button"><a href="chatbot.html"></a></button>-->
+<div style="margin:auto; width:90%;">
+    <a href="#"><img src="{{ url_for('static', filename='chatbot.png')}}" style="width:30px; height:30px; float:right"></a>
+
+</div>
+
+</body>
+</html>
+
+{% endblock %}

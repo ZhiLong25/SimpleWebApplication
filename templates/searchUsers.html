@@ -1,0 +1,140 @@
+{% extends "admin.html" %}
+{% block title %}Prime Supermarket - Delete Users{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+
+<div>
+    <input type="button" value="Search Customer" class="btn btn-primary" name="submit" id="show-cust" />
+    <input type="button" value="Search Admin" class="btn btn-primary" name="submit" id="show-admin"/>
+
+
+    <div id="cust-form" style="display:none">
+        <form method="POST" action="" novalidate id="search-cust">
+            <div class="form-group">
+                {{ render_field(form.cust_id, class="form-control") }}
+                <input type="submit" value="Find Customer" class="btn btn-primary" name="submit"/>
+            </div>
+        </form>
+        <h2>Customer Database</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Membership</th>
+                <th>Date Joined</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for customer in cust_list %}
+            <tr>
+                <td>{{ customer.get_user_id() }}</td>
+                <td>{{ customer.get_first_name() }}</td>
+                <td>{{ customer.get_last_name() }}</td>
+                <td>{{ customer.get_gender() }}</td>
+                <td>{{ customer.get_email() }}</td>
+                <td>{{ customer.get_membership() }}</td>
+                <td>{{ customer.get_joined_date() }}</td>
+                <td><a href="/updateUser/{{customer.get_user_id()}}/customer" class="btn btn-warning">Update</a></td>
+                <td>
+                    <form action="{{url_for('delete_user', id=customer.get_user_id(), select='customer')}}" method="POST">
+                        <input type="submit" value="Delete" class="btn btn-danger"
+                               onclick="return confirm('Are you sure you want to delete {{customer.get_first_name()}} {{customer.get_last_name()}}?');">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div id="admin-form" style="display:none">
+        <form method="POST" action="" novalidate id="search-admin" >
+            <div class="form-group">
+                {{ render_field(form.admin_id, class="form-control") }}
+                <input type="submit" value="Find Admin" class="btn btn-primary" name="submit"/>
+            </div>
+        </form>
+
+        <h2>Admin Database</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Admin ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for admin in admin_list %}
+            <tr>
+                <td>{{ admin.get_user_id() }}</td>
+                <td>{{ admin.get_first_name() }}</td>
+                <td>{{ admin.get_last_name() }}</td>
+                <td>{{ admin.get_email() }}</td>
+                <td>{{ admin.get_role() }}</td>
+                <td><a href="/updateUser/{{admin.get_user_id()}}/admin" class="btn btn-warning">Update</a></td>
+                <td>
+                    <form action="{{url_for('delete_user', id=admin.get_user_id(), select='admin')}}" method="POST">
+                        <input type="submit" value="Delete" class="btn btn-danger"
+                               onclick="return confirm('Are you sure you want to delete {{admin.get_first_name()}} {{admin.get_last_name()}}?');">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+const adminbtn = document.getElementById('show-admin');
+const custbtn = document.getElementById('show-cust');
+
+const form = document.getElementById('admin-form');
+const form2 = document.getElementById('cust-form');
+
+
+adminbtn.addEventListener('click', () => {
+
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+        form2.style.display = 'none';
+    }
+    else {
+        form.style.display = 'none';
+    }
+
+});
+
+custbtn.addEventListener('click', () => {
+
+    if (form2.style.display === 'none') {
+        form2.style.display = 'block';
+        form.style.display = 'none';
+    } else {
+
+        form2.style.display = 'none';
+    }
+});
+
+</script>
+
+
+{% endblock %}

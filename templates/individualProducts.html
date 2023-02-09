@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Prime Supermarket - Individual Products{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+
+
+<body>
+<div style="width:80%; margin:auto; margin-top: 80px;">
+    <div class="row g-4" style="min-height: 600px;">
+        <div class="col-md-5" style="border:1px solid grey; border-radius:10px;">
+            <img src="/uploads/{{ image }}" style="width:100%;height:100%;">
+        </div>
+        <div class="col-md-7">
+            <h2>{{ prod_name }}</h2>
+            <span>
+                    {{ desc }}
+                </span>
+            <br><br>
+            <span>$ {{ price }}</span> <br><br>
+
+
+            <form method="POST" enctype="multipart/form-data" novalidate>
+                <span>
+                    {{ render_field(form.quantity, class="form-control") }}
+                </span>
+                <br>
+                <input type="submit" value="Add to cart" style="float:right">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>
+
+{% endblock %}
